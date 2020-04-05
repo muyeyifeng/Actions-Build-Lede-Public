@@ -18,6 +18,7 @@ on:
       - .github/workflows/openwrt-ci-rpi2-3-4.yml
       - .github/workflows/openwrt-ci-rpi364.yml
       - .github/workflows/openwrt-ci-x64.yml
+      - *.md
 
 jobs:
 
