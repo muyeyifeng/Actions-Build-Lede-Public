@@ -94,11 +94,11 @@ jobs:
           ls
           cd lede
           make -j$(nproc) || make -j1 V=s
-          echo "======================="
+          echo "========================"
           echo "Space usage:"
-          echo "======================="
+          echo "========================"
           df -h
-          echo "======================="
+          echo "========================"
           du -h --max-depth=1 ./ --exclude=build_dir --exclude=bin
           du -h --max-depth=1 ./build_dir
           du -h --max-depth=1 ./bin
