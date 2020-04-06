@@ -140,7 +140,7 @@ jobs:
           path: ./openwrt/tmp/
 
       - name: Upload artifact rpi234_32bit rpi3_64bit x86_64
-        if: "${{ matrix.db-backend }}" != "n1"
+        if: ${{ matrix.db-backend }} != "n1"
         uses: actions/upload-artifact@master
         with:
           name: OPENWRT-${{ matrix.db-backend }}
