@@ -104,7 +104,7 @@ jobs:
           du -h --max-depth=1 ./bin
 
       - name: SCP N1 build files
-        if: ${{ matrix.db-backend }} == 'n1'
+        if: ${{ matrix.db-backend }} == "n1"
         run: |
           echo "${{ secrets.CLOUDCONE_CENTOS_KEY }}" > Cloudcone-centos.pem
           eval `ssh-agent`
@@ -116,7 +116,7 @@ jobs:
           scp -i Cloudcone-centos.pem root@lassrv4.muyeyifeng.space:/root/mk_n1opimg.tar.gz ./
 
       - name: Decompression and move files
-        if: ${{ matrix.db-backend }} == 'n1'
+        if: ${{ matrix.db-backend }} == "n1"
         run: |     
           tar zxvf mk_n1opimg.tar.gz
           ls
@@ -126,21 +126,21 @@ jobs:
           sudo mv Armbian_20.02.0_Aml-s9xxx_buster_5.4.28-amlogic-flippy-32+.img /opt/imgs/
 
       - name: Build N1_OPIMG
-        if: ${{ matrix.db-backend }} == 'n1'
+        if: ${{ matrix.db-backend }} == "n1"
         run: |
           mv ./lede/bin/targets/armvirt/64/openwrt-armvirt-64-default-rootfs.tar.gz ./openwrt
           cd openwrt
           sudo ./mk_n1_opimg.sh
 
       - name: Upload artifact n1
-        if: ${{ matrix.db-backend }} == 'n1'
+        if: ${{ matrix.db-backend }} == "n1"
         uses: actions/upload-artifact@master
         with:
           name: OPENWRT-${{ matrix.db-backend }}
           path: ./openwrt/tmp/
 
       - name: Upload artifact rpi234_32bit rpi3_64bit x86_64
-        if: ${{ matrix.db-backend }} != 'n1'
+        if: "${{ matrix.db-backend }}" != "n1"
         uses: actions/upload-artifact@master
         with:
           name: OPENWRT-${{ matrix.db-backend }}
