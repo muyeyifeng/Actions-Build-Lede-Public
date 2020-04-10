@@ -121,7 +121,7 @@ jobs:
           tar zxvf mk_openwrt.tar.gz
           ls
           sudo mkdir /opt/imgs
-          sudo mv *.img /opt/imgs/
+          sudo mv openwrt/*.img /opt/imgs/
 
       - name: Build N1_OPIMG Beikeyun_OPIMG
         if: matrix.db-backend == 'aarch64'
