@@ -68,6 +68,11 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
+      - name: Add important app
+        run: |
+          git clone https://github.com/fw876/helloworld
+          mv helloworld/luci-app-ssr-plus lede/package/lean
+
       - name: Generate configuration file
         run: |
           cp ${{ matrix.db-backend }}.defconfig lede/defconfig
