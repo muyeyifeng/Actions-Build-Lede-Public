@@ -136,4 +136,4 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: OPENWRT-${{ matrix.db-backend }}
-          path: ./lede/bin/targets/
+          path: ./lede/bin/
