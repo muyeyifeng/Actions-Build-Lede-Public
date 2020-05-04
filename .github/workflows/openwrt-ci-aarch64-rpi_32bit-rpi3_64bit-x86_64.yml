@@ -123,16 +123,9 @@ jobs:
           cd openwrt
           sudo ./mk_n1_opimg.sh
           sudo ./mk_beikeyun_opimg.sh
+          mv ./openwrt/tmp/* ./lede/bin/
 
-      - name: Upload artifact aarch64
-        if: matrix.db-backend == 'aarch64'
-        uses: actions/upload-artifact@master
-        with:
-          name: OPENWRT-${{ matrix.db-backend }}
-          path: ./openwrt/tmp/
-
-      - name: Upload artifact rpi234_32bit rpi3_64bit x86_64
-        if: matrix.db-backend != 'aarch64'
+      - name: Upload artifact
         uses: actions/upload-artifact@master
         with:
           name: OPENWRT-${{ matrix.db-backend }}
