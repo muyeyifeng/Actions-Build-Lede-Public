@@ -42,6 +42,7 @@ jobs:
           sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
           sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
           sudo -E apt-get update
+          sudo -E apt-get upgrade -y
           #==================================
           echo "$(cat lede/README.md |grep 'sudo apt-get' | sed -n 2p)"
           $(cat lede/README.md |grep "sudo apt-get" | sed -n 2p)
@@ -123,7 +124,7 @@ jobs:
           cd openwrt
           sudo ./mk_n1_opimg.sh
           sudo ./mk_beikeyun_opimg.sh
-          mv ./openwrt/tmp/* ./lede/bin/
+          mv ./openwrt/tmp ./lede/bin/
 
       - name: Upload artifact
         uses: actions/upload-artifact@master
