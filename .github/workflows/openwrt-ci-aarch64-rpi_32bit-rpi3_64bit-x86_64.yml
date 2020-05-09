@@ -122,7 +122,7 @@ jobs:
           cd openwrt
           sudo ./mk_n1_opimg.sh
           sudo ./mk_beikeyun_opimg.sh
-          mv ./openwrt/tmp ./lede/bin/
+          mv ./openwrt/tmp  ./lede/bin/
 
       - name: Upload artifact
         uses: actions/upload-artifact@master
