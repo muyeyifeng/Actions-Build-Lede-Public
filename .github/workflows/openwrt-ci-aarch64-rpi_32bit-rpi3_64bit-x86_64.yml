@@ -95,35 +95,35 @@ jobs:
           du -h --max-depth=1 ./build_dir
           du -h --max-depth=1 ./bin
 
-      - name: SCP N1-Beikeyun build files
-        if: matrix.db-backend == 'aarch64'
-        run: |
-          echo "${{ secrets.CLOUDCONE_CENTOS_KEY }}" > Cloudcone-centos.pem
-          eval `ssh-agent`
-          chmod 600 Cloudcone-centos.pem
-          ssh-add Cloudcone-centos.pem
-          mkdir -p ~/.ssh/
-          ssh-keyscan lassrv4.muyeyifeng.space >> ~/.ssh/known_hosts
-          ssh -T root@lassrv4.muyeyifeng.space
-          scp -i Cloudcone-centos.pem root@lassrv4.muyeyifeng.space:/root/mk_openwrt.tar.gz ./
+#      - name: SCP N1-Beikeyun build files
+#        if: matrix.db-backend == 'aarch64'
+#        run: |
+#          echo "${{ secrets.CLOUDCONE_CENTOS_KEY }}" > Cloudcone-centos.pem
+#          eval `ssh-agent`
+#          chmod 600 Cloudcone-centos.pem
+#          ssh-add Cloudcone-centos.pem
+#          mkdir -p ~/.ssh/
+#          ssh-keyscan lassrv4.muyeyifeng.space >> ~/.ssh/known_hosts
+#          ssh -T root@lassrv4.muyeyifeng.space
+#          scp -i Cloudcone-centos.pem root@lassrv4.muyeyifeng.space:/root/mk_openwrt.tar.gz ./
 
-      - name: Decompression and move files
-        if: matrix.db-backend == 'aarch64'
-        run: |     
-          tar zxvf mk_openwrt.tar.gz
-          ls
-          sudo mkdir /opt/imgs
-          sudo mv openwrt/*.img /opt/imgs/
+#      - name: Decompression and move files
+#        if: matrix.db-backend == 'aarch64'
+#        run: |     
+#          tar zxvf mk_openwrt.tar.gz
+#          ls
+#          sudo mkdir /opt/imgs
+#          sudo mv openwrt/*.img /opt/imgs/
 
-      - name: Build N1_OPIMG Beikeyun_OPIMG
-        if: matrix.db-backend == 'aarch64'
-        run: |
-          mv ./lede/bin/targets/armvirt/64/openwrt-armvirt-64-default-rootfs.tar.gz ./openwrt
-          cd openwrt
-          sudo ./mk_n1_opimg.sh
-          sudo ./mk_beikeyun_opimg.sh
-          tree ../openwrt
-          sudo mv ../openwrt/tmp ../lede/bin/
+#      - name: Build N1_OPIMG Beikeyun_OPIMG
+#        if: matrix.db-backend == 'aarch64'
+#        run: |
+#          mv ./lede/bin/targets/armvirt/64/openwrt-armvirt-64-default-rootfs.tar.gz ./openwrt
+#          cd openwrt
+#          sudo ./mk_n1_opimg.sh
+#          sudo ./mk_beikeyun_opimg.sh
+#          tree ../openwrt
+#          sudo mv ../openwrt/tmp ../lede/bin/
 
       - name: Upload artifact
         uses: actions/upload-artifact@master
