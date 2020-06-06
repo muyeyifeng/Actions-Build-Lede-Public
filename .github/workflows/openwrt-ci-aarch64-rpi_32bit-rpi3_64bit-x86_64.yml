@@ -11,6 +11,8 @@ on:
 #    paths-ignore:
 #      - .github/workflows/openwrt-ci-aarch64.yml
 #      - .github/workflows/openwrt-ci-rpi2-3-4.yml
+    schedule:
+      - cron: 0 20 * * *
 
 jobs:
 
