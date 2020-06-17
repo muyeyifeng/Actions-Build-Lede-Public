@@ -72,7 +72,7 @@ jobs:
           cp ${{ matrix.db-backend }}.defconfig lede/defconfig
           cd lede
           ls
-          cat defconfig >> .config
+          cat defconfig > .config
           make defconfig
           cat .config
 
