@@ -32,7 +32,9 @@ jobs:
           fetch-depth: 1000000
 
       - name: Clone source code
-        run:  git clone  https://github.com/coolsnowwolf/lede
+        run:  |
+          git clone  https://github.com/coolsnowwolf/lede
+          str="$(tail -n 1 lede/feeds.conf.default)" &&echo ${str#*#}>>lede/feeds.conf.default
 
       - name: Space cleanup
         env:
@@ -62,10 +64,10 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
-      - name: Add important app
-        run: |
-          git clone https://github.com/fw876/helloworld
-          mv helloworld/luci-app-ssr-plus lede/package/lean
+#      - name: Add important app
+#        run: |
+#          git clone https://github.com/fw876/helloworld
+#          mv helloworld/luci-app-ssr-plus lede/package/lean
 
       - name: Generate configuration file
         run: |
