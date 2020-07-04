@@ -8,9 +8,8 @@ on:
   push:
     branches: 
       - master
-#    paths-ignore:
-#      - .github/workflows/openwrt-ci-aarch64.yml
-#      - .github/workflows/openwrt-ci-rpi2-3-4.yml
+    paths-ignore:
+      - "*.md"
   schedule:
     - cron: 30 18 * * *
 
