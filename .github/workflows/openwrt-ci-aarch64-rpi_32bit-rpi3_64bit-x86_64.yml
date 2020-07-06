@@ -33,7 +33,6 @@ jobs:
       - name: Clone source code
         run:  |
           git clone  https://github.com/coolsnowwolf/lede
-          str="$(tail -n 1 lede/feeds.conf.default)" &&echo ${str#*#}>>lede/feeds.conf.default
 
       - name: Space cleanup
         env:
@@ -54,12 +53,8 @@ jobs:
 
       - name: Update feeds
         run: |
-          echo "======================="
-          echo "Lede"
-          echo "======================="
-          ls lede
-          echo "======================="
           cd lede
+          sed -i 's/\"#src-git\"/\"src-git\"/g' ./feeds.conf.default
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
