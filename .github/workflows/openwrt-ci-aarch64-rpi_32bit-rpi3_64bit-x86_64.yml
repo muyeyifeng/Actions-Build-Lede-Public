@@ -55,7 +55,6 @@ jobs:
         run: |
           mv ./feeds.conf.default ./lede/feeds.conf.default
           cd lede
-#          sed -i 's/\"#src-git\"/\"src-git\"/g' ./feeds.conf.default
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
