@@ -11,7 +11,7 @@ on:
     paths-ignore:
       - "*.md"
   schedule:
-    - cron: 30 18 * * *
+    - cron: 30 18 * * 0/3
 
 jobs:
 
