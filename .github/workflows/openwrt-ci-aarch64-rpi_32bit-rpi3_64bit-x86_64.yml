@@ -7,7 +7,7 @@ name: OpenWrt-CI-ALL_IN_ONE
 on:
   push:
     branches: 
-      - master
+      - main
     paths-ignore:
       - "*.md"
   schedule:
