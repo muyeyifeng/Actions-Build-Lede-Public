@@ -13,6 +13,9 @@ on:
   schedule:
     - cron: 30 18 * * 0/3
 
+enc:
+  action_state: run
+
 jobs:
 
   build:
@@ -43,9 +46,9 @@ jobs:
           cd lede
           git log -1 --format=%cd
           echo -n "$(git log -1 --format=%cd)" |md5sum > tmpmd5
-          if [[ "$(cat ../md5 | tail -n 1 |awk '{print $1}')" == "$(cat tmpmd5| tail -n 1 |awk '{print $1}')" ]];
-              then
+          if [[ "$(cat ../md5 | tail -n 1 |awk '{print $1}')" == "$(cat tmpmd5| tail -n 1 |awk '{print $1}')" ]]; then
                   echo "action_state=cancel" >> $GITHUB_ENV;
+          else
                   echo -n "$(git log -1 --format=%cd)" |md5sum >> ../md5;
           fi
 
