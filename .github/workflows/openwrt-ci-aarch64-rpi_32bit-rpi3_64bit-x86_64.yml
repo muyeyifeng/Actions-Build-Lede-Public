@@ -130,7 +130,7 @@ jobs:
           path: ./lede/bin/packages/
 
       - name: Upload release asset
-        if: env.action_state == 'run'
+        if: env.action_state == 'fail'
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
