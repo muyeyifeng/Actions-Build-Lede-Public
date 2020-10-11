@@ -34,9 +34,25 @@ jobs:
         run:  |
           git clone  https://github.com/coolsnowwolf/lede
 
+      - name: Show Last md5
+        run:  |
+          cat md5 | tail -n 1 |awk '{print $1}'
+
+      - name: Check MD5
+        run:  |
+          cd lede
+          git log -1 --format=%cd
+          echo -n "$(git log -1 --format=%cd)" |md5sum > tmpmd5
+          if [[ "$(cat ../md5 | tail -n 1 |awk '{print $1}')" == "$(cat tmpmd5| tail -n 1 |awk '{print $1}')" ]];
+              then
+                  echo "action_state=cancel" >> $GITHUB_ENV;
+                  echo -n "$(git log -1 --format=%cd)" |md5sum >> ../md5;
+          fi
+
       - name: Space cleanup
         env:
           DEBIAN_FRONTEND: noninteractive
+        if: env.action_state == 'run'
         run: |
           docker rmi `docker images -q`
           sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
@@ -48,10 +64,12 @@ jobs:
           $(cat lede/README.md |grep "sudo apt-get" | sed -n 2p)
           sudo -E apt-get -y install tree
           sudo -E apt-get -y autoremove --purge
+          sudo -E apt-get -y upgrade
           sudo -E apt-get clean
           df -h
 
       - name: Update feeds
+        if: env.action_state == 'run'
         run: |
           mv ./feeds.conf.default ./lede/feeds.conf.default
           cd lede
@@ -59,6 +77,7 @@ jobs:
           ./scripts/feeds install -a
 
       - name: Generate configuration file
+        if: env.action_state == 'run'
         run: |
           cp ${{ matrix.db-backend }}.defconfig lede/defconfig
           cd lede
@@ -68,6 +87,7 @@ jobs:
           cat .config
 
       - name: Make download
+        if: env.action_state == 'run'
         run: |
           ls
           cd lede
@@ -75,6 +95,7 @@ jobs:
           find dl -size -1024c -exec rm -f {} \;
 
       - name: Compile firmware
+        if: env.action_state == 'run'
         run: |
           ls
           cd lede
@@ -89,13 +110,24 @@ jobs:
           du -h --max-depth=1 ./bin
 
       - name: Upload artifact
+        if: env.action_state == 'run'
         uses: actions/upload-artifact@main
         with:
           name: OPENWRT-${{ matrix.db-backend }}-targets
           path: ./lede/bin/targets/
 
       - name: Upload artifact
+        if: env.action_state == 'run'
         uses: actions/upload-artifact@main
         with:
           name: OPENWRT-${{ matrix.db-backend }}-packages
           path: ./lede/bin/packages/
+
+      - name: Upload release asset
+        if: env.action_state == 'run'
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: $( find -type f -name "*rootfs.tar.gz" )
+          tag: test
+          file_glob: true
