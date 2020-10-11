@@ -10,11 +10,14 @@ on:
       - main
     paths-ignore:
       - "*.md"
+      - "md5"
   schedule:
     - cron: 30 18 * * 0/3
 
 env:
   action_state: run
+  GITHUB_EMAIL: muyeyifeng@gmail.com	#email
+  GITHUB_USER: muyeyifeng
 
 jobs:
 
@@ -134,3 +137,30 @@ jobs:
           file: $( find -type f -name "*rootfs.tar.gz" )
           tag: test
           file_glob: true
+
+      - name: Push this source
+        if: env.action_state == 'run'
+        run: |
+          rm -rf lede
+          echo "${{ secrets.GHB_KEY }}" >github.pem
+          eval `ssh-agent`
+          chmod 600 github.pem
+          ssh-add github.pem
+          mkdir -p ~/.ssh/
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          
+          ls
+          echo "============ git config ============"
+          git config --global user.email ${GITHUB_EMAIL}
+          git config --global user.name ${GITHUB_USER}
+          echo "============ git commit ============"
+          rm -rf github.pem
+          if( ${{ github.event_name == 'push' }} );then
+            git add -f .
+            git commit --no-verify -m "Update md5" 
+          else
+            git add .
+            git commit -m "Update md5" 
+          fi
+          echo "============ git push ============"
+          git push
