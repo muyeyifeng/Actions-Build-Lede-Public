@@ -48,6 +48,7 @@ jobs:
         run:  |
           cd lede
           git log -1 --format=%cd
+          echo -n "$(git log -1 --format=%cd)" |md5sum
           echo -n "$(git log -1 --format=%cd)" |md5sum > tmpmd5
           if [[ "$(cat ../md5 | tail -n 1 |awk '{print $1}')" == "$(cat tmpmd5| tail -n 1 |awk '{print $1}')" ]]; then
                   echo "action_state=cancel" >> $GITHUB_ENV;
