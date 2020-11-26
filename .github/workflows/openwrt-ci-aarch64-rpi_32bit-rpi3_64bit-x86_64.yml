@@ -59,7 +59,7 @@ jobs:
       - name: Space cleanup
         env:
           DEBIAN_FRONTEND: noninteractive
-        if: env.action_state == 'run'
+        if: env.action_state == 'run' || ${{ github.event_name }}=='push'
         run: |
           docker rmi `docker images -q`
           sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
@@ -76,7 +76,7 @@ jobs:
           df -h
 
       - name: Update feeds
-        if: env.action_state == 'run'
+        if: env.action_state == 'run' || ${{ github.event_name }}=='push'
         run: |
           cp ./feeds.conf.default ./lede/feeds.conf.default
           cd lede
@@ -84,7 +84,7 @@ jobs:
           ./scripts/feeds install -a
 
       - name: Generate configuration file
-        if: env.action_state == 'run'
+        if: env.action_state == 'run' || ${{ github.event_name }}=='push'
         run: |
           cp ${{ matrix.db-backend }}.defconfig lede/defconfig
           cd lede
@@ -94,7 +94,7 @@ jobs:
           cat .config
 
       - name: Make download
-        if: env.action_state == 'run'
+        if: env.action_state == 'run' || ${{ github.event_name }}=='push'
         run: |
           ls
           cd lede
@@ -102,7 +102,7 @@ jobs:
           find dl -size -1024c -exec rm -f {} \;
 
       - name: Compile firmware
-        if: env.action_state == 'run'
+        if: env.action_state == 'run' || ${{ github.event_name }}=='push'
         run: |
           ls
           cd lede
@@ -117,14 +117,14 @@ jobs:
           du -h --max-depth=1 ./bin
 
       - name: Upload artifact targets
-        if: env.action_state == 'run'
+        if: env.action_state == 'run' || ${{ github.event_name }}=='push'
         uses: actions/upload-artifact@main
         with:
           name: OPENWRT-${{ matrix.db-backend }}-targets
           path: ./lede/bin/targets/
 
       - name: Upload artifact packages
-        if: env.action_state == 'run'
+        if: env.action_state == 'run'  || ${{ github.event_name }}=='push'
         uses: actions/upload-artifact@main
         with:
           name: OPENWRT-${{ matrix.db-backend }}-packages
