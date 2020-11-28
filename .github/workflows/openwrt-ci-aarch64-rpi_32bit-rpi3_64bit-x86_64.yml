@@ -27,7 +27,7 @@ jobs:
 
     strategy:
       matrix:
-        db-backend: [rpi2-3-4, rpi364, aarch64, x64]
+        db-backend: [rpi2-3-4, rpi364, rpi464, aarch64, x64, rpi464_M]	# 'M' means debug version
 
     steps:
       - name: Checkout
