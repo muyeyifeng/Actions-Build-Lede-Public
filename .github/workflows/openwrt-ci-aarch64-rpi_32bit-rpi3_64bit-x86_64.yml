@@ -62,6 +62,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         if: env.action_state == 'run' || ${{ github.event_name }}=='push'
         run: |
+          echo ${action_state}
           docker rmi `docker images -q`
           sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
           sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
