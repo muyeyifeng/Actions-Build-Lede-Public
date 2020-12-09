@@ -70,8 +70,8 @@ jobs:
           sudo -E apt-get update
           sudo -E apt-get upgrade -y
           #==================================
-          echo "$(cat ~/lede/README.md |grep 'sudo apt-get' | sed -n 2p)"
-          $(cat ~/lede/README.md |grep "sudo apt-get" | sed -n 2p)
+          echo "$(cat ./lede/README.md |grep 'sudo apt-get' | sed -n 2p)"
+          $(cat ./lede/README.md |grep "sudo apt-get" | sed -n 2p)
           sudo -E apt-get -y install tree
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get -y upgrade
