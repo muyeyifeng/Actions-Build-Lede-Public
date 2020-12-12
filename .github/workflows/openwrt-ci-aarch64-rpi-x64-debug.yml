@@ -65,10 +65,23 @@ jobs:
                   echo -n "$(git log -1 --format=%cd)" |md5sum >> ../md5
           fi
 
+      - name: Set platform names
+        if: env.action_state == 'run' || ${{ github.event_name }}=='push'
+        run: |
+          case ${{ matrix.db-backend }} in
+          "aarch64") echo "path=armvirt/64/openwrt-armvirt-64" >> $GITHUB_ENV;;
+          "rpi2-3-4") echo "path=bcm27xx/bcm2709/openwrt-bcm27xx-bcm2709-rpi-2" >> $GITHUB_ENV;;
+          "rpi364") echo "path=bcm27xx/bcm2710/openwrt-bcm27xx-bcm2710-rpi-3" >> $GITHUB_ENV;;
+          "rpi464") echo "path=bcm27xx/bcm2711/openwrt-bcm27xx-bcm2711-rpi-4" >> $GITHUB_ENV;;
+          "x64") echo "path=x86/64/openwrt-x86-64-generic" >> $GITHUB_ENV;;
+          *) echo "impossible";;
+          esac
+
       - name: Check env
         run: |
           echo ${{ env.action_state }}
           echo ${{ github.event_name }}
+          echo ${{ env.path }}
 
       - name: Space cleanup
         env:
@@ -130,17 +143,6 @@ jobs:
           du -h --max-depth=1 ./ --exclude=build_dir --exclude=bin
           du -h --max-depth=1 ./build_dir
           du -h --max-depth=1 ./bin
-
-      - name: Set platform names
-        if: env.action_state == 'run' || ${{ github.event_name }}=='push'
-        run: |
-          case ${{ matrix.db-backend }} in
-          "aarch64") echo "path=armvirt/64/openwrt-armvirt-64" >> $GITHUB_ENV;;
-          "rpi2-3-4") echo "path=bcm27xx/bcm2709/openwrt-bcm27xx-bcm2709-rpi-2" >> $GITHUB_ENV;;
-          "rpi364") echo "path=bcm27xx/bcm2710/openwrt-bcm27xx-bcm2710-rpi-3" >> $GITHUB_ENV;;
-          "rpi464") echo "path=bcm27xx/bcm2711/openwrt-bcm27xx-bcm2711-rpi-4" >> $GITHUB_ENV;;
-          "x64") echo "path=x86/64/openwrt-x86-64-generic" >> $GITHUB_ENV;;
-          "*") echo "impossible";;
 
       - name: Upload artifact targets
         if: env.action_state == 'run' || ${{ github.event_name }}=='push'
