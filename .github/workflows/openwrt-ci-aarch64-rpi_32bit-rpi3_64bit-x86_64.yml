@@ -11,7 +11,7 @@ on:
     paths-ignore:
       - "*.md"
       - "md5"
-      - "openwrt-ci-aarch64-rpi-x64-debug.yml"
+      - ".github/workflows/openwrt-ci-aarch64-rpi-x64-debug.yml"
   schedule:
     - cron: 30 18 * * 0/3
 
