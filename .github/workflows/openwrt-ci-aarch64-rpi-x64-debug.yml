@@ -67,7 +67,7 @@ jobs:
 
       - name: Check env
         run: |
-          echo env.action_state
+          echo ${{ env.action_state }}
           echo ${{ github.event_name }}
 
       - name: Space cleanup
@@ -250,7 +250,7 @@ jobs:
          sudo docker push $DOCKER_REGISTRY_URL"lede-"${{ matrix.db-backend }}:$tag
 
       - name: Push this source
-        if: env.action_state == 'run' &&  matrix.db-backend == 'rpi2-3-4'
+        if: env.action_state == 'test &&  matrix.db-backend == 'rpi2-3-4'
         run: |
           rm -rf lede
           echo "${{ secrets.GHB_KEY }}" >github.pem
