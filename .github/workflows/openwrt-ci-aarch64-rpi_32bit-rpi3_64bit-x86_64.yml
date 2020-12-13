@@ -82,7 +82,7 @@ jobs:
           df -h
 
       - name: Update feeds
-        if: env.action_state == 'run' || ${{ github.event_name }}=='push'
+        if: env.action_state == 'run' && ${{ github.event_name }}=='push'
         run: |
           cp ./feeds.conf.default ./lede/feeds.conf.default
           cd lede
