@@ -61,8 +61,8 @@ jobs:
         run: |
           echo ${{ env.action_state }}
           echo ${{ github.event_name }}
-          echo '${{ env.action_state }}' == 'run'
-          echo '${{ github.event_name }}' == 'push'
+          echo (${{ env.action_state }} == 'run')
+          echo (${{ github.event_name }} == 'push')
           echo ( '${{ env.action_state }}' == 'run' || '${{ github.event_name }}'=='push' )
 
       - name: Space cleanup
