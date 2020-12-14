@@ -163,56 +163,56 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: openwrt-x86-64-generic-ext4-combined.img
-          path: ./lede/bin/targets/${ env.path }-ext4-combined.img
+          path: ./lede/bin/targets/${{ env.path }}-ext4-combined.img
 
       - name: openwrt-x86-64-generic-ext4-combined.vmdk
         if: ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && matrix.db-backend =='x64' }}
         uses: actions/upload-artifact@main
         with:
           name: openwrt-x86-64-generic-ext4-combined.vmdk
-          path: ./lede/bin/targets/${ env.path }-ext4-combined.vmdk
+          path: ./lede/bin/targets/${{ env.path }}-ext4-combined.vmdk
 
       - name: openwrt-x86-64-generic-ext4-combined-efi.img
         if: ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && matrix.db-backend =='x64' }}
         uses: actions/upload-artifact@main
         with:
           name: openwrt-x86-64-generic-ext4-combined-efi.img
-          path: ./lede/bin/targets/${ env.path }-ext4-combined-efi.img
+          path: ./lede/bin/targets/${{ env.path }}-ext4-combined-efi.img
 
       - name: openwrt-x86-64-generic-ext4-combined-efi.vmdk
         if: ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && matrix.db-backend =='x64' }}
         uses: actions/upload-artifact@main
         with:
           name: openwrt-x86-64-generic-ext4-combined-efi.vmdk
-          path: ./lede/bin/targets/${ env.path }-ext4-combined-efi.vmdk
+          path: ./lede/bin/targets/${{ env.path }}-ext4-combined-efi.vmdk
 
       - name: openwrt-bcm27xx-bcm2709-rpi-2-ext4-factory.img.gz
         if: ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && matrix.db-backend =='rpi2-3-4' }}
         uses: actions/upload-artifact@main
         with:
           name: openwrt-bcm27xx-bcm2709-rpi-2-ext4-factory.img.gz
-          path: ./lede/bin/targets/${ env.path }-ext4-factory.img.gz
+          path: ./lede/bin/targets/${{ env.path }}-ext4-factory.img.gz
 
       - name: openwrt-bcm27xx-bcm2710-rpi-3-ext4-factory.img.gz
         if: ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && matrix.db-backend =='rpi364' }}
         uses: actions/upload-artifact@main
         with:
           name: openwrt-bcm27xx-bcm2710-rpi-3-ext4-factory.img.gz
-          path: ./lede/bin/targets/${ env.path }-ext4-factory.img.gz
+          path: ./lede/bin/targets/${{ env.path }}-ext4-factory.img.gz
 
       - name: openwrt-bcm27xx-bcm2711-rpi-4-ext4-factory.img.gz
         if: ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && matrix.db-backend =='rpi464' }}
         uses: actions/upload-artifact@main
         with:
           name: openwrt-bcm27xx-bcm2711-rpi-4-ext4-factory.img.gz
-          path: ./lede/bin/targets/${ env.path }-ext4-factory.img.gz
+          path: ./lede/bin/targets/${{ env.path }}-ext4-factory.img.gz
 
       - name: openwrt-armvirt-64-default-rootfs.tar.gz
         if: ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && matrix.db-backend =='aarch64' }}
         uses: actions/upload-artifact@main
         with:
           name: openwrt-armvirt-64-default-rootfs.tar.gz
-          path: ./lede/bin/targets/${ env.path }-default-rootfs.tar.gz
+          path: ./lede/bin/targets/${{ env.path }}-default-rootfs.tar.gz
 
       - name: Build DockerImage
         if: ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && env.Build_Docker }}
