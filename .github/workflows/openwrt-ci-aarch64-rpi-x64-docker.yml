@@ -254,7 +254,7 @@ jobs:
       - name: Push this source
         if: ${{ env.action_state == 'run' &&  matrix.db-backend == 'rpi2-3-4' }}
         run: |
-          rm -rf lede
+          rm -rf lede docker-build
           echo "${{ secrets.GHB_KEY }}" >github.pem
           eval `ssh-agent`
           chmod 600 github.pem
