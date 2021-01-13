@@ -237,7 +237,7 @@ jobs:
       - name: Push DockerImage
         if:  ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && env.Build_Docker }}
         run: |
-         sudo docker login --username=$DOCKER_REGISTRY_USERNAME --password=${{ secrets.ALIDOCKER_KEY }}  $DOCKER_REGISTRY_HOST
+         sudo docker login --username=$DOCKER_REGISTRY_USERNAME --password-stdin=${{ secrets.ALIDOCKER_KEY }}  $DOCKER_REGISTRY_HOST
          echo "============================="
          sudo docker images
          echo "============================="
