@@ -24,6 +24,8 @@ env:
   #需补充容器托管端用户信息
   #以下为Ali云镜像托管服务
   Build_Docker: true
+  #hub.docker.com用户
+  HUBDOCKER_REGISTRY_USERNAME: muyeyifeng
   DOCKER_REGISTRY_USERNAME: muyeyifeng@163.com
   DOCKER_REGISTRY_HOST: registry.cn-beijing.aliyuncs.com
   DOCKER_REGISTRY_URL: registry.cn-beijing.aliyuncs.com/muyeyifeng/
@@ -237,7 +239,6 @@ jobs:
       - name: Push DockerImage
         if:  ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && env.Build_Docker }}
         run: |
-         sudo docker login --username=$DOCKER_REGISTRY_USERNAME --password=${{ secrets.ALIDOCKER_KEY }}  $DOCKER_REGISTRY_HOST
          echo "============================="
          sudo docker images
          echo "============================="
@@ -245,10 +246,19 @@ jobs:
          echo "============================="
          echo $ImageId
          echo "============================="
-         sudo docker tag $ImageId $DOCKER_REGISTRY_URL"lede-"${{ matrix.db-backend }}:latest
-         sudo docker push $DOCKER_REGISTRY_URL"lede-"${{ matrix.db-backend }}:latest
+
          tag=$(date +%Y%m%d%H%M%S)
+         sudo docker tag $ImageId $DOCKER_REGISTRY_URL"lede-"${{ matrix.db-backend }}:latest
          sudo docker tag $ImageId $DOCKER_REGISTRY_URL"lede-"${{ matrix.db-backend }}:$tag
+         sudo docker tag $ImageId muyeyifeng/lede-${{ matrix.db-backend }}:$tag
+
+         #push hub.docker.com
+         sudo docker login --username=$HUBDOCKER_REGISTRY_USERNAME --password=${{ secrets.HUBDOCKER_KEY }} 
+         sudo docker push muyeyifeng/lede-${{ matrix.db-backend }}:$tag
+
+         #push Aliyun
+         sudo docker login --username=$DOCKER_REGISTRY_USERNAME --password=${{ secrets.ALIDOCKER_KEY }}  $DOCKER_REGISTRY_HOST
+         sudo docker push $DOCKER_REGISTRY_URL"lede-"${{ matrix.db-backend }}:latest
          sudo docker push $DOCKER_REGISTRY_URL"lede-"${{ matrix.db-backend }}:$tag
 
       - name: Push this source
