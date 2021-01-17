@@ -250,6 +250,7 @@ jobs:
          echo "============================="
 
          tag=$(date +%Y%m%d%H%M%S)
+         echo "tag=$tag" >> $GITHUB_ENV
          sudo docker tag $ImageId $DOCKER_REGISTRY_URL"lede-"${{ matrix.db-backend }}:latest
          sudo docker tag $ImageId $DOCKER_REGISTRY_URL"lede-"${{ matrix.db-backend }}:$tag
          sudo docker tag $ImageId muyeyifeng/lede-${{ matrix.db-backend }}:latest
@@ -261,7 +262,7 @@ jobs:
          #push hub.docker.com
          sudo docker login --username=$HUBDOCKER_REGISTRY_USERNAME --password=${{ secrets.HUBDOCKER_KEY }} 
          sudo docker push muyeyifeng/lede-${{ matrix.db-backend }}:latest
-         sudo docker push muyeyifeng/lede-${{ matrix.db-backend }}:$tag
+         sudo docker push muyeyifeng/lede-${{ matrix.db-backend }}:${{ env.tag }}
 
       - name: Push Aliyun DockerImage
         if:  ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && env.Build_Docker && env.Push_Aliyun }}
@@ -269,7 +270,7 @@ jobs:
          #push Aliyun
          sudo docker login --username=$DOCKER_REGISTRY_USERNAME --password=${{ secrets.ALIDOCKER_KEY }}  $DOCKER_REGISTRY_HOST
          sudo docker push $DOCKER_REGISTRY_URL"lede-"${{ matrix.db-backend }}:latest
-         sudo docker push $DOCKER_REGISTRY_URL"lede-"${{ matrix.db-backend }}:$tag
+         sudo docker push $DOCKER_REGISTRY_URL"lede-"${{ matrix.db-backend }}:${{ env.tag }}
 
       - name: Push this source
         if: ${{ env.action_state == 'run' &&  matrix.db-backend == 'rpi2-3-4' }}
