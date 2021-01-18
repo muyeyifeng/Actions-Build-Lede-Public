@@ -86,6 +86,9 @@ jobs:
           echo ${{ env.action_state }}
           echo ${{ github.event_name }}
           echo ${{ env.path }}
+          echo ${{ env.Push_Dockerhub }}
+          echo ${{ env.Push_Aliyun }}
+          echo ${{ env.Build_Docker }}
 
       - name: Space cleanup
         env:
@@ -257,7 +260,7 @@ jobs:
          sudo docker tag $ImageId muyeyifeng/lede-${{ matrix.db-backend }}:$tag
 
       - name: Push DockerHub DockerImage
-        if:  ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && env.Build_Docker && env.Push_Dockerhub  }}
+        if:  ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && env.Build_Docker == 'true' && env.Push_Dockerhub == 'true'  }}
         run: |
          #push hub.docker.com
          sudo docker login --username=$HUBDOCKER_REGISTRY_USERNAME --password=${{ secrets.HUBDOCKER_KEY }} 
@@ -265,7 +268,7 @@ jobs:
          sudo docker push muyeyifeng/lede-${{ matrix.db-backend }}:${{ env.tag }}
 
       - name: Push Aliyun DockerImage
-        if:  ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && env.Build_Docker && env.Push_Aliyun }}
+        if:  ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && env.Build_Docker == 'true' && env.Push_Aliyun == 'true' }}
         run: |
          #push Aliyun
          sudo docker login --username=$DOCKER_REGISTRY_USERNAME --password=${{ secrets.ALIDOCKER_KEY }}  $DOCKER_REGISTRY_HOST
