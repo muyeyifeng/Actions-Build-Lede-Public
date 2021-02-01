@@ -25,7 +25,7 @@ env:
   #以下为Ali云镜像托管服务
   Build_Docker: true
   Push_Dockerhub: true
-  Push_Aliyun: false
+  Push_Aliyun: true
   #hub.docker.com用户
   HUBDOCKER_REGISTRY_USERNAME: muyeyifeng
   DOCKER_REGISTRY_USERNAME: muyeyifeng@163.com
