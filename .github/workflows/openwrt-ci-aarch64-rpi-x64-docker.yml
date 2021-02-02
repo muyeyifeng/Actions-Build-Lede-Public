@@ -73,11 +73,11 @@ jobs:
         if: ${{ env.action_state == 'run' ||  github.event_name == 'push' }}
         run: |
           case ${{ matrix.db-backend }} in
-          "aarch64") echo "path=armvirt/64/openwrt-armvirt-64" >> $GITHUB_ENV;;
-          "rpi2-3-4") echo "path=bcm27xx/bcm2709/openwrt-bcm27xx-bcm2709-rpi-2" >> $GITHUB_ENV;;
-          "rpi364") echo "path=bcm27xx/bcm2710/openwrt-bcm27xx-bcm2710-rpi-3" >> $GITHUB_ENV;;
-          "rpi464") echo "path=bcm27xx/bcm2711/openwrt-bcm27xx-bcm2711-rpi-4" >> $GITHUB_ENV;;
-          "x64") echo "path=x86/64/openwrt-x86-64-generic" >> $GITHUB_ENV;;
+          "aarch64") echo "path=armvirt/64/openwrt-armvirt-64" >> $GITHUB_ENV&&echo "arch=arm64v8" >> $GITHUB_ENV;;
+          "rpi2-3-4") echo "path=bcm27xx/bcm2709/openwrt-bcm27xx-bcm2709-rpi-2" >> $GITHUB_ENV&&echo "arch=arm32v7" >> $GITHUB_ENV;;
+          "rpi364") echo "path=bcm27xx/bcm2710/openwrt-bcm27xx-bcm2710-rpi-3" >> $GITHUB_ENV&&echo "arch=arm64v8" >> $GITHUB_ENV;;
+          "rpi464") echo "path=bcm27xx/bcm2711/openwrt-bcm27xx-bcm2711-rpi-4" >> $GITHUB_ENV&&echo "arch=arm64v8" >> $GITHUB_ENV;;
+          "x64") echo "path=x86/64/openwrt-x86-64-generic" >> $GITHUB_ENV&&echo "arch=amd64" >> $GITHUB_ENV;;
           *) echo "impossible";;
           esac
 
@@ -89,6 +89,7 @@ jobs:
           echo ${{ env.Push_Dockerhub }}
           echo ${{ env.Push_Aliyun }}
           echo ${{ env.Build_Docker }}
+          echo ${{ env.arch }}
 
       - name: Space cleanup
         env:
@@ -239,7 +240,7 @@ jobs:
           CMD /sbin/init
           EOF
           cat Dockerfile
-          docker build -f ./Dockerfile -t lede-${{ matrix.db-backend }}:$(date +%Y%m%d%H%M%S) .
+          docker build -f ./Dockerfile -t lede-${{ matrix.db-backend }}:$(date +%Y%m%d%H%M%S) --build-arg ARCH=${{ env.arch }}/ .
 
       - name: Tag DockerImage
         if:  ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && env.Build_Docker }}
