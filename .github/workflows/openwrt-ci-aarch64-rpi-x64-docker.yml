@@ -267,14 +267,6 @@ jobs:
          sudo docker push muyeyifeng/lede-${{ matrix.db-backend }}:latest
          sudo docker push muyeyifeng/lede-${{ matrix.db-backend }}:${{ env.tag }}
 
-      - name: Push Aliyun DockerImage
-        if:  ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && env.Build_Docker == 'true' && env.Push_Aliyun == 'true' }}
-        run: |
-         #push Aliyun
-         sudo docker login --username=$DOCKER_REGISTRY_USERNAME --password=${{ secrets.ALIDOCKER_KEY }}  $DOCKER_REGISTRY_HOST
-         sudo docker push $DOCKER_REGISTRY_URL"lede-"${{ matrix.db-backend }}:latest
-         sudo docker push $DOCKER_REGISTRY_URL"lede-"${{ matrix.db-backend }}:${{ env.tag }}
-
       - name: Push this source
         if: ${{ env.action_state == 'run' &&  matrix.db-backend == 'rpi2-3-4' }}
         run: |
@@ -301,3 +293,11 @@ jobs:
           fi
           echo "============ git push ============"
           git push
+
+      - name: Push Aliyun DockerImage
+        if:  ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && env.Build_Docker == 'true' && env.Push_Aliyun == 'true' }}
+        run: |
+         #push Aliyun
+         sudo docker login --username=$DOCKER_REGISTRY_USERNAME --password=${{ secrets.ALIDOCKER_KEY }}  $DOCKER_REGISTRY_HOST
+         sudo docker push $DOCKER_REGISTRY_URL"lede-"${{ matrix.db-backend }}:latest
+         sudo docker push $DOCKER_REGISTRY_URL"lede-"${{ matrix.db-backend }}:${{ env.tag }}
