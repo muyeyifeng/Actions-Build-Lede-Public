@@ -294,6 +294,18 @@ jobs:
           echo "============ git push ============"
           git push
 
+      - name: Add Aliyun Docker Accelerator
+        if:  ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && env.Build_Docker == 'true' && env.Push_Aliyun == 'true' }}
+        run: |
+         sudo mkdir -p /etc/docker
+         sudo tee /etc/docker/daemon.json <<-'EOF'
+         {
+           "registry-mirrors": ["${{ secrets.ALIACCELERATOR }}"]
+         }
+         EOF
+         sudo systemctl daemon-reload
+         sudo systemctl restart docker 
+
       - name: Push Aliyun DockerImage
         if:  ${{ ( env.action_state == 'run' || github.event_name == 'push' ) && env.Build_Docker == 'true' && env.Push_Aliyun == 'true' }}
         run: |
