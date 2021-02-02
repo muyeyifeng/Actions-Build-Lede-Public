@@ -3,9 +3,13 @@
 针对x86-64, rpi-32bit, rpi3-64bit, rpi4-64bit, aarch64 五种平台定时编译。
 
 Artifacts内容包括：
+
     各平台的镜像合集（targets文件夹）；
+    
     编译出的插件合集（packages文件夹）；
+    
     各平台单一镜像（img.gz）
+    
     x86-64平台vmdk文件
 
 同时构建docker镜像：
