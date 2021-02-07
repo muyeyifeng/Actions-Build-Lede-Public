@@ -51,7 +51,9 @@ jobs:
 
       - name: Clone source code
         run:  |
-          git clone  https://github.com/coolsnowwolf/lede
+          git clone https://github.com/coolsnowwolf/lede
+          git clone https://github.com/muyeyifeng/Clone-Lean-lede
+          mv Clone-Lean-lede/dl lede/
 
       - name: Show Last md5
         run:  |
